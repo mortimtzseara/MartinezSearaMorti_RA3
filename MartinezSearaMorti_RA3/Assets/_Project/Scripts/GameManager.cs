@@ -19,6 +19,14 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
+    private void OnEnable()
+    {
+        GameEvents.OnSceneChanged += ChangeScene;
+    }
+    private void OnDisable()
+    {
+        GameEvents.OnSceneChanged -= ChangeScene;
+    }
     void Start()
     {
         lives = startingLives;
@@ -34,8 +42,8 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    public void StartGame()
+    public void ChangeScene(string sceneName)
     {
-        SceneManager.LoadScene("Level1");
+        SceneManager.LoadScene(sceneName);
     }
 }

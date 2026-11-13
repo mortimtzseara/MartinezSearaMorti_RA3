@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4375669472303976}
   - component: {fileID: 212708087984030996}
   m_Layer: 0
-  m_Name: Medieval_props_free_4
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

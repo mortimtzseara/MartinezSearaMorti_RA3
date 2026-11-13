@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
 	private Rigidbody2D rb;
 	private SpriteRenderer sr;
     private Animator anim;
+    private IInteractable interactable;
 
 	[Header("Movement")]
     [SerializeField] private float speed = 5f;
@@ -24,15 +25,15 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
     {
         inputActions = new InputSystem_Actions();
         inputActions.Player.SetCallbacks(this);
-    }
 
-	void Start()
-	{
 		rb = GetComponent<Rigidbody2D>();
 		sr = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
+		anim = GetComponent<Animator>();
 	}
-
+    void FixedUpdate()
+    {
+		rb.linearVelocity = new Vector2(moveInput.x * speed, rb.linearVelocity.y);
+	}
 	void Update()
 	{
         CheckGrounded();
@@ -41,8 +42,6 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
 
         anim.SetBool("isGrounded", isGrounded);
         anim.SetBool("isMoving", isMoving);
-
-		transform.Translate(moveInput * speed * Time.deltaTime);
 	}
 
 	private void OnEnable() => inputActions.Enable();
@@ -55,8 +54,7 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
         {
             rb.gravityScale *= -1;
 
-            if (sr.flipY) sr.flipY = false;
-            else sr.flipY = true;
+            sr.flipY = !sr.flipY;
         }
     }
 
@@ -66,6 +64,13 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
 		if (moveInput.x != 0) sr.flipX = moveInput.x < 0;
 	}
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            interactable?.Interact();
+        }
+    }
     private void CheckGrounded()
     {
         float currentOffsetY = sr.flipY ? offsetY : -offsetY;
@@ -73,11 +78,19 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
 
         isGrounded = Physics2D.OverlapBox(checkPosition, checkSize, 0f, groundLayer);
     }
-	private void OnDrawGizmos()
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Gizmos.color = isGrounded ? Color.green : Color.red;
-		float currentOffsetY = (sr != null && sr.flipY) ? offsetY : -offsetY;
-		Vector2 checkPosition = (Vector2)transform.position + new Vector2(0f, currentOffsetY);
-		Gizmos.DrawWireCube(checkPosition, checkSize);
+		if (collision.TryGetComponent(out IInteractable detectedInteractable))
+		{
+			interactable = detectedInteractable;
+		}
+	}
+
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision.TryGetComponent(out IInteractable exitingInteractable) && exitingInteractable == interactable)
+		{
+			interactable = null;
+		}
 	}
 }
