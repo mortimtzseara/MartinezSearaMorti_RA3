@@ -66,10 +66,15 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && DialogueManager.IsDialogueActive)
+        {
+            GameEvents.RequestAdvanceDialogue();
+        }
+        else if (context.performed && !DialogueManager.IsDialogueActive)
         {
             interactable?.Interact();
         }
+        
     }
     private void CheckGrounded()
     {

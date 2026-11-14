@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c63bf78de6bfcd04dac7133be5611784, type: 3}
+  m_Name: Lvl1_Dialog
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueData
+  lines:
+  - Necessito la teva ajuda!!
+  - "El meu regne ha estat corromput per les forces del mal... Nom\xE9s un heroi
+    com t\xFA pot acabar amb aquest mal!"
+  - "No he aconseguit sortir del castell, per\xF2 segur que t\xFA te'n sortir\xE0s."
+  - "Per a moure't fes servir les tecles de direcci\xF3 i per usar els teus poders
+    de canvi de gravetat  utilitza l'espai."
+  - Bona sort!
