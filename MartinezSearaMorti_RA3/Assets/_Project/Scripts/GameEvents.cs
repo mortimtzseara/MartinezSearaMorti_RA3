@@ -3,18 +3,19 @@ using UnityEngine;
 
 public static class GameEvents
 {
+    public static event Action OnGameStart;
     public static event Action<string> OnSceneChanged;
     public static event Action<DialogueData> OnDialogueRequested;
     public static event Action OnDialogueAdvanceRequested;
+    public static event Action<int> OnHealthChanged;
+    public static event Action OnTakeDamage;
+    public static event Action OnGameOver;
 
-    public static event Action<int, int> OnHealthChanged;
-
+    public static void GameStart() => OnGameStart?.Invoke();
     public static void SceneChanged(string sceneName) => OnSceneChanged?.Invoke(sceneName);
     public static void RequestDialogue(DialogueData data) => OnDialogueRequested?.Invoke(data);
     public static void RequestAdvanceDialogue() => OnDialogueAdvanceRequested?.Invoke();
-
-    public static void PlayerHealthChanged(int currentHealth, int maxHealth)
-    {
-        OnHealthChanged?.Invoke(currentHealth, maxHealth);
-    }
+    public static void PlayerHealthChanged(int currentHealth) => OnHealthChanged?.Invoke(currentHealth);
+    public static void GameOver() => OnGameOver?.Invoke();
+    public static void TakeDamage() => OnTakeDamage?.Invoke();
 }

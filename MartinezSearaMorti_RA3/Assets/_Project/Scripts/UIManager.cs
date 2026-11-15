@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class UIManager : MonoBehaviour
 {
@@ -11,12 +12,12 @@ public class UIManager : MonoBehaviour
     private DialogueData currentDialogue;
     private int currentLineIndex = 0;
     public static bool IsDialogueActive { get; private set; } = false;
+    public static UIManager Instance;
 
     private void OnEnable()
     {
         GameEvents.OnDialogueRequested += StartDialogue;
         GameEvents.OnDialogueAdvanceRequested += DisplayNextLine;
-
         GameEvents.OnHealthChanged += UpdateHealthUI;
     }
 
@@ -27,6 +28,18 @@ public class UIManager : MonoBehaviour
         GameEvents.OnHealthChanged -= UpdateHealthUI;
 
         IsDialogueActive = false;
+    }
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); return;
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
     }
 
     private void Start()
@@ -67,14 +80,13 @@ public class UIManager : MonoBehaviour
         IsDialogueActive = false;
         dialoguePanel.SetActive(false);
     }
-
-
-
-    private void UpdateHealthUI(int currentHealth, int maxHealth)
+    private void UpdateHealthUI(int currentHealth)
     {
         if (healthText != null)
         {
-            healthText.text = $"{currentHealth} / {maxHealth}";
+            healthText.text = $"Vides x{currentHealth}";
         }
     }
+    
+
 }
