@@ -7,7 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject topBar;
     [SerializeField] private GameObject gameOverPanel;
-    private int startingLives = 3;
+    [SerializeField] private GameObject winPanel;
+
+    private int startingLives = 5;
     private int currentLives;
     public bool IsGameOver { get; private set; }
     private void Awake()
@@ -26,11 +28,13 @@ public class GameManager : MonoBehaviour
     }
     private void OnEnable()
     {
+        GameEvents.OnGameWin += GameWin;
         GameEvents.OnSceneChanged += ChangeScene;
         GameEvents.OnTakeDamage += TakeDamage;
     }
     private void OnDisable()
     {
+        GameEvents.OnGameWin -= GameWin;
         GameEvents.OnSceneChanged -= ChangeScene;
         GameEvents.OnTakeDamage -= TakeDamage;
     }
@@ -64,6 +68,7 @@ public class GameManager : MonoBehaviour
         topBar.SetActive(true);
         gameOverPanel.SetActive(false);
         RestartLives();
+        GameEvents.GameStart();
     }
     public void ExitGame()
     {
@@ -71,8 +76,9 @@ public class GameManager : MonoBehaviour
     }
     public void GameOver()
     {
+        GameEvents.GameOver();
         gameOverPanel.SetActive(true);
-        Time.timeScale = 0;
+        Time.timeScale = 0;        
     }
     private void RestartLives()
     {
@@ -91,5 +97,10 @@ public class GameManager : MonoBehaviour
         {
             GameEvents.PlayerHealthChanged(currentLives);
         }        
+    }
+    public void GameWin()
+    {
+        winPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 }

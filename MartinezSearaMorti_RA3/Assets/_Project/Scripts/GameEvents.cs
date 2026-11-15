@@ -10,12 +10,18 @@ public static class GameEvents
     public static event Action<int> OnHealthChanged;
     public static event Action OnTakeDamage;
     public static event Action OnGameOver;
+    public static event Action OnGameWin;
+    public static event Action OnGravityChange;
+    public static event Action OnOpeningDoor;
 
-    public static void GameStart() => OnGameStart?.Invoke();
+    public static void OpeningDoor() => OnOpeningDoor?.Invoke();
+    public static void GravityChange() => OnGravityChange?.Invoke();
+    public static void GameStart() { OnGameStart?.Invoke(); Debug.Log("Gamestarts"); }
     public static void SceneChanged(string sceneName) => OnSceneChanged?.Invoke(sceneName);
     public static void RequestDialogue(DialogueData data) => OnDialogueRequested?.Invoke(data);
     public static void RequestAdvanceDialogue() => OnDialogueAdvanceRequested?.Invoke();
     public static void PlayerHealthChanged(int currentHealth) => OnHealthChanged?.Invoke(currentHealth);
     public static void GameOver() => OnGameOver?.Invoke();
     public static void TakeDamage() => OnTakeDamage?.Invoke();
+    public static void GameWin() => OnGameWin?.Invoke();
 }

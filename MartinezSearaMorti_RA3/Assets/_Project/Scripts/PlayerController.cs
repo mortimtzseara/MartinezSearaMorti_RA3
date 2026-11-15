@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour, InputSystem_Actions.IPlayerAction
             rb.gravityScale *= -1;
 
             sr.flipY = !sr.flipY;
+            GameEvents.GravityChange();
         }
     }
 
